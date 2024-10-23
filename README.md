@@ -1,40 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Acortador de Url´s
 
-## Getting Started
+El proyecto "Acortador de URL's" es una aplicación web diseñada para simplificar el uso y la gestión de enlaces largos, permitiendo a los usuarios acortar URL's y redirigir a su destino de manera eficiente. Desarrollado utilizando React y Next.js para una experiencia de usuario ágil y dinámica, el backend está construido con Prisma y MongoDB, garantizando un manejo robusto de datos.
 
-First, run the development server:
+Características Principales:
 
+- Acortamiento de URL: Permite a los usuarios ingresar enlaces largos y obtener una versión corta que redirige al enlace original.
+
+- Verificación de URL: Implementa un control para asegurarse de que la URL proporcionada sea válida y exista antes de acortarla, minimizando errores y mejorando la experiencia del usuario.
+
+- Almacenamiento en Base de Datos: Todas las URL's acortadas se almacenan en una base de datos MongoDB, lo que permite un acceso rápido y una gestión sencilla de los enlaces acortados.
+
+
+## Instrucciones para Ejecutar
+
+Este es un proyecto de Next.js creado con create-next-app.
+
+1. Clona el Repositorio
+
+### Paso 1: Clonar el Repositorio
+```bash
+git clone https://github.com/cozakoo/url-short.git
+```
+### Paso 2: Ir al directorio clonado
+```bash
+cd url-short/
+```
+### Paso 3: Ejecutar
+```bash
+npm install
+#o
+yarn install
+# o
+pnpm install
+# o
+bun install
+```
+
+### Paso 4: Configura la Base de Datos
+Asegúrate de tener MongoDB corriendo y configura tu conexión en el archivo de configuración correspondiente. Generalmente, esto se hace en un archivo .env o en la configuración de Prisma.
+
+### Paso 5: Ejecuta el Servidor de Desarrollo
+Inicia el servidor de desarrollo con el siguiente comando:
+
+### Paso 6: Correr
 ```bash
 npm run dev
-# or
+# o
 yarn dev
-# or
+# o
 pnpm dev
-# or
+# o
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Paso 7: Accede a la Aplicación
+Abre tu navegador y ve a http://localhost:3000 para ver el resultado.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+### Paso 8: Modifica la Página de Inicio
+Puedes comenzar a editar la página modificando el archivo pages/index.js. La página se actualizará automáticamente a medida que edites el archivo.
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+### Paso 9: Accede a las Rutas de la API
+Las rutas de la API se pueden acceder en http://localhost:3000/api/shortUrl. Este endpoint se puede editar en pages/api/shortUrl.js.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+### Paso 10: Estructura de la API
+La carpeta pages/api está mapeada a /api/*. Los archivos en este directorio son tratados como rutas de API en lugar de páginas de React.
