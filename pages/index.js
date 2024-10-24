@@ -1,8 +1,12 @@
 import { useRef, useState } from 'react';
+import { useSession, signIn, signOut } from "next-auth/react";
+
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 
 export default function Home() {
+  const { data: session } = useSession();
+
   const inputRef = useRef();
   const [shortURL, setShortURL] = useState('');
   const [error, setError] = useState('');
@@ -54,16 +58,13 @@ export default function Home() {
         <title>Simplifica tus URLs</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+        
       <main className={styles.main}>
-        <h1 className={styles.title}>Acorta, Comparte y Simplifica</h1>
+      <h1 className={styles.title}>Acorta, Comparte y Simplifica</h1>
+      <div className={styles.content}>
+        <div className={styles.left}>
 
-        <p className={styles.description}>
-          Haz clic en el botón y observa cómo tu URL se transforma
-        </p>
-
-        <div className={styles.grid}>
-          <form className={styles.card} onSubmit={handleSubmit}>
+            <form className={styles.card} onSubmit={handleSubmit}>
             <input
               ref={inputRef}
               type="text"
@@ -78,7 +79,22 @@ export default function Home() {
             {shortURL && !error && !isLoading && <span className={styles.result}>URL acortada: {shortURL}</span>}
           </form>
         </div>
-      </main>
-    </div>
-  );
+        <div className={styles.right}>
+          {/* Aquí puedes agregar cualquier contenido adicional para la derecha */}
+        {session ? (
+          <>
+              <p>Signed in as {session.user.email}</p>
+              <button onClick={() => signOut()}>Sign out</button>
+            </>
+          ) : (
+            <>
+              <p>Para acceder a características adicionales, inicia sesión en tu cuenta.</p>
+              <button className={styles.button} onClick={() => signIn()}>Iniciar sesión</button>
+            </>
+          )}
+        </div>
+      </div>
+    </main>
+  </div>
+);
 }
