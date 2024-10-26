@@ -8,20 +8,27 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  email     String   @unique
-  name      String?
-  image     String? // Imagen de perfil si usan Google/Facebook
-  links     Link[]   // Relación con las URLs acortadas
-  createdAt DateTime @default(now()) // Fecha de creación del usuario
+  id        String @id @default(auto()) @map("_id") @db.ObjectId // Campo de ID único para MongoDB
+  email     String @unique // El email sigue siendo único
+  links     UserLink[] // Relación con el modelo intermedio
+  createdAt DateTime  @default(now())
 }
 
 model Link {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  url       String   @unique
-  shortUrl  String   @unique
-  createdAt DateTime @default(now())
-  userId    String?  @db.ObjectId  // Referencia al ObjectId del usuario
-  user      User?    @relation(fields: [userId], references: [id])
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  url           String    @unique
+  shortUrl      String    @unique
+  createdAt     DateTime  @default(now())
+  redirectCount Int       @default(0)
+  users         UserLink[] // Relación con el modelo intermedio
 }
 
+model UserLink {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  userId  String @db.ObjectId // Aquí puedes mantenerlo como un String, que se usará para referirse al ID del usuario
+  linkId  String @db.ObjectId
+  user    User   @relation(fields: [userId], references: [id]) // Referencia al campo 'id' en User
+  link    Link   @relation(fields: [linkId], references: [id])
+
+  @@unique([userId, linkId]) // Asegura que la combinación de userId y linkId sea única
+}

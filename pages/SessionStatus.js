@@ -6,15 +6,21 @@ const SessionStatus = ({ session }) => {
     <div>
       {session ? (
         <>
-          <p>Bienvenido {session.user.name}</p>
-          <br/>
-          <button onClick={() => signOut()}>Finalizar sesión</button>
+          <div className={styles.containerSession}>
+            <img src={session.user.image} alt="Profile" className={styles.imageSession} />
+            <div className={styles.details}>
+              <div className={styles.infoSession}>
+                <p className={styles.nameSession}>{session.user.name}</p>
+                <p className={styles.emailSession}>{session.user.email}</p>
+              </div>
+              <button className={styles.buttonSession} onClick={() => signOut()}>Finalizar sesión</button>
+            </div>
+          </div>
         </>
       ) : (
         <>
-          <p>Para acceder a características adicionales, inicia sesión en tu cuenta.</p>
-          <br/>
-          <button className={styles.button} onClick={() => signIn()}>Iniciar sesión</button>
+          <p>Inicia sesión en tu cuenta para guardar tus URLs y acceder a tu historial.</p>
+          <button className={styles.buttonSession} onClick={() => signIn()}>Iniciar sesión</button>
         </>
       )}
     </div>

@@ -1,5 +1,7 @@
 // components/UrlShortener.js
 import { useRef, useState } from 'react';
+import { useSession } from 'next-auth/react'; // Importa el hook de sesión
+
 import styles from '../styles/Home.module.css';
 
 const UrlShortener = ({ onShorten }) => {
@@ -7,6 +9,7 @@ const UrlShortener = ({ onShorten }) => {
   const [shortURL, setShortURL] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const { data: session } = useSession(); // Obtén la sesión
 
   const isUrlValid = (url) => {
     try {
@@ -36,7 +39,11 @@ const UrlShortener = ({ onShorten }) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ url }),
+      credentials: 'include', // Esto asegura que las cookies se envían
+      body: JSON.stringify({ 
+        url, 
+        userEmail: session ? session.user.email : null,
+       }),
     })
       .then((res) => res.json())
       .then((data) => {
