@@ -5,12 +5,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  /* height: 100vh; */
 }
 
 .main {
   flex: 1;
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -141,7 +141,7 @@
   padding: 20px;
   border-right: 1px solid #ccc; /* Separador opcional */
   padding-right: 30px;
-  display: flex; /* Activa el modo flex en el div .left */
+  /* display: flex; Activa el modo flex en el div .left */
   align-items: center; /* Centra verticalmente */
   justify-content: center; /* Centra horizontalmente, si es necesario */
 }
@@ -235,4 +235,15 @@
 
 .titleRecord{
   text-align: center;
+}
+
+/* styles/Home.module.css */
+.searchInput {
+  padding: 8px;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 400px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }

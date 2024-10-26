@@ -1,12 +1,13 @@
 // SessionStatus.js
 import { signIn, signOut } from "next-auth/react";
-import { useEffect, useState } from "react";
-import styles from '../styles/Home.module.css';
-import Record from './Record';
+import { useState, useEffect } from "react";
+import Record from "./Record";
+import styles from "../styles/Home.module.css";
 
 const SessionStatus = ({ session, fetchHistory }) => {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para el término de búsqueda
 
   useEffect(() => {
     if (session) {
@@ -18,11 +19,17 @@ const SessionStatus = ({ session, fetchHistory }) => {
     }
   }, [session, fetchHistory]);
 
+  // Filtrar historial basado en el término de búsqueda
+  const filteredHistory = history.filter((link) =>
+    link.url.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    link.shortUrl.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div>
       {session ? (
         <>
-          <div className={styles.containerSession}>
+                    <div className={styles.containerSession}>
             <img src={session.user.image} alt="Profile" className={styles.imageSession} />
             <div className={styles.details}>
               <div className={styles.infoSession}>
@@ -32,24 +39,32 @@ const SessionStatus = ({ session, fetchHistory }) => {
             </div>
             <button className={styles.buttonSession} onClick={() => signOut()}>Cerrar sesión</button>
           </div>
-
           <div className={styles.history}>
             <h2 className={styles.titleRecord}>Historial de URLs</h2>
+            <br/>
+            {/* Campo de búsqueda */}
+            <input
+              type="text"
+              placeholder="Buscar URL..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className={styles.searchInput}
+            />
             {loading ? (
               <p>Cargando historial...</p>
-            ) : history.length > 0 ? (
-              history.map(link => (
+            ) : filteredHistory.length > 0 ? (
+              filteredHistory.map((link) => (
                 <Record key={link.id} url={link.url} shortUrl={link.shortUrl} />
               ))
             ) : (
-              <p>No tienes historial de URLs.</p>
+              <p>No se encontraron resultados para "{searchTerm}".</p>
             )}
           </div>
         </>
       ) : (
         <>
-          <p>Inicia sesión en tu cuenta para guardar tus URLs y acceder a tu historial.</p>
-          <button className={styles.buttonSession} onClick={() => signIn()}>Iniciar sesión</button>
+        <p>Inicia sesión en tu cuenta para guardar tus URLs y acceder a tu historial.</p>
+        <button className={styles.buttonSession} onClick={() => signIn()}>Iniciar sesión</button>
         </>
       )}
     </div>

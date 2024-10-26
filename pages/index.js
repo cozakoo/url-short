@@ -35,8 +35,8 @@ export default function Home() {
       </Head>
       <br/>
         
-      <main className={styles.main}>
       <h1 className={styles.title}>Acorta, Comparte y Simplifica</h1>
+      <main className={styles.main}>
         <div className={styles.content}>
           <div className={styles.left}>
             <UrlShortener onShorten={(shortUrl) => console.log(shortUrl)} />
