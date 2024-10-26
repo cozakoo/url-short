@@ -1,7 +1,9 @@
+// SessionStatus.js
 import { signIn, signOut } from "next-auth/react";
 import styles from '../styles/Home.module.css';
+import Record from './Record';
 
-const SessionStatus = ({ session }) => {
+const SessionStatus = ({ session, history }) => {
   return (
     <div>
       {session ? (
@@ -15,6 +17,18 @@ const SessionStatus = ({ session }) => {
               </div>
               <button className={styles.buttonSession} onClick={() => signOut()}>Finalizar sesión</button>
             </div>
+          </div>
+
+          {/* Mostrar historial */}
+          <div className={styles.history}>
+            <h2>Historial de URLs</h2>
+            {history.length > 0 ? (
+              history.map(link => (
+                <Record key={link.id} url={link.shortUrl} />
+              ))
+            ) : (
+              <p>No tienes historial de URLs.</p>
+            )}
           </div>
         </>
       ) : (

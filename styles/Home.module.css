@@ -198,3 +198,21 @@
   padding-bottom: 1px;
 
 }
+
+.historyContainer {
+  margin-top: 20px;
+}
+
+.historyList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.historyList li {
+  margin: 5px 0;
+}
+
+.historyList a {
+  text-decoration: none;
+  color: blue;
+}

@@ -43,7 +43,7 @@ const UrlShortener = ({ onShorten }) => {
       body: JSON.stringify({ 
         url, 
         userEmail: session ? session.user.email : null,
-       }),
+      }),
     })
       .then((res) => res.json())
       .then((data) => {
@@ -54,6 +54,9 @@ const UrlShortener = ({ onShorten }) => {
       .catch((err) => console.error('Error:', err))
       .finally(() => setIsLoading(false));
   };
+
+  // Asegúrate de que la variable de entorno está definida
+  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'; // Valor por defecto
 
   return (
     <form className={styles.card} onSubmit={handleSubmit}>
@@ -68,7 +71,11 @@ const UrlShortener = ({ onShorten }) => {
       <br />
       {error && <span className={styles.error}>{error}</span>}
       {isLoading && <span className={styles.loading}>Procesando...</span>}
-      {shortURL && !error && !isLoading && <span className={styles.result}>URL acortada: {shortURL}</span>}
+      {shortURL && !error && !isLoading && (
+        <span className={styles.result}>
+          URL acortada: <a href={`${baseUrl}/${shortURL}`} target="_blank" rel="noopener noreferrer">{`${baseUrl}/${shortURL}`}</a>
+        </span>
+      )}
     </form>
   );
 };
