@@ -216,3 +216,22 @@
   text-decoration: none;
   color: blue;
 }
+
+/* styles/Home.module.css */
+.history {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+
+.history:hover{
+  border-color: #0070f3;
+
+}
+
+
+.titleRecord{
+  text-align: center;
+}

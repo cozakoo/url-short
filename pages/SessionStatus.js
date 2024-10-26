@@ -21,10 +21,10 @@ const SessionStatus = ({ session, history }) => {
 
           {/* Mostrar historial */}
           <div className={styles.history}>
-            <h2>Historial de URLs</h2>
+            <h2 className={styles.titleRecord} >Historial de URLs</h2>
             {history.length > 0 ? (
               history.map(link => (
-                <Record key={link.id} url={link.shortUrl} />
+                <Record key={link.id} url={link.url} shortUrl={link.shortUrl} />
               ))
             ) : (
               <p>No tienes historial de URLs.</p>

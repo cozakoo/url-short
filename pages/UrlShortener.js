@@ -1,6 +1,5 @@
-// components/UrlShortener.js
 import { useRef, useState } from 'react';
-import { useSession } from 'next-auth/react'; // Importa el hook de sesión
+import { useSession } from 'next-auth/react';
 
 import styles from '../styles/Home.module.css';
 

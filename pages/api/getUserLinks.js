@@ -18,13 +18,14 @@ export default async function handler(req, res) {
       link: true, // Incluye los enlaces asociados
     },
   });
+  
+  const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000"; // Usa la URL base desde el entorno
 
   const links = userLinks.map(userLink => ({
-    id: userLink.link.id,
     url: userLink.link.url,
-    shortUrl: userLink.link.shortUrl,
-    createdAt: userLink.link.createdAt,
+    shortUrl: `${baseUrl}/${userLink.link.shortUrl}`, // Construye la URL completa
   }));
 
+  console.log("ASASDSAD: ", links);
   res.json(links);
 }
