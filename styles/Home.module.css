@@ -9,7 +9,6 @@
 }
 
 .main {
-  padding: 5rem 0;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -142,11 +141,15 @@
   padding: 20px;
   border-right: 1px solid #ccc; /* Separador opcional */
   padding-right: 30px;
+  display: flex; /* Activa el modo flex en el div .left */
+  align-items: center; /* Centra verticalmente */
+  justify-content: center; /* Centra horizontalmente, si es necesario */
 }
 
 .right {
   flex: 1; /* Toma el 33% del espacio */
   padding: 20px;
+  width: 40%;
 }
 
 .input {
@@ -162,7 +165,7 @@
   align-items: center;
   justify-content: space-between;
   margin: 10px;
-  width: 100%;
+  /* width: 100%; */
 }
 
 .details {
@@ -191,12 +194,10 @@
 }
 
 .buttonSession {
-  margin-top: 10px;
   padding-left: 10px;
   padding-right: 10px;
   padding-top: 1px;
   padding-bottom: 1px;
-
 }
 
 .historyContainer {

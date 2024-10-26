@@ -15,13 +15,15 @@ const SessionStatus = ({ session, history }) => {
                 <p className={styles.nameSession}>{session.user.name}</p>
                 <p className={styles.emailSession}>{session.user.email}</p>
               </div>
-              <button className={styles.buttonSession} onClick={() => signOut()}>Finalizar sesión</button>
+              
+              
             </div>
+              <button className={styles.buttonSession} onClick={() => signOut()}>Finalizar sesión</button>
           </div>
 
           {/* Mostrar historial */}
           <div className={styles.history}>
-            <h2 className={styles.titleRecord} >Historial de URLs</h2>
+            <h2 className={styles.titleRecord} >Historial de URL's</h2>
             {history.length > 0 ? (
               history.map(link => (
                 <Record key={link.id} url={link.url} shortUrl={link.shortUrl} />

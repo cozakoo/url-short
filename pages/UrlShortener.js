@@ -58,6 +58,7 @@ const UrlShortener = ({ onShorten }) => {
   const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'; // Valor por defecto
 
   return (
+    
     <form className={styles.card} onSubmit={handleSubmit}>
       <input
         ref={inputRef}
