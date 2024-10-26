@@ -1,9 +1,23 @@
 // SessionStatus.js
 import { signIn, signOut } from "next-auth/react";
+import { useEffect, useState } from "react";
 import styles from '../styles/Home.module.css';
 import Record from './Record';
 
-const SessionStatus = ({ session, history }) => {
+const SessionStatus = ({ session, fetchHistory }) => {
+  const [history, setHistory] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (session) {
+      fetchHistory()
+        .then((data) => setHistory(data))
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(true);
+    }
+  }, [session, fetchHistory]);
+
   return (
     <div>
       {session ? (
@@ -15,16 +29,15 @@ const SessionStatus = ({ session, history }) => {
                 <p className={styles.nameSession}>{session.user.name}</p>
                 <p className={styles.emailSession}>{session.user.email}</p>
               </div>
-              
-              
             </div>
-              <button className={styles.buttonSession} onClick={() => signOut()}>Finalizar sesión</button>
+            <button className={styles.buttonSession} onClick={() => signOut()}>Cerrar sesión</button>
           </div>
 
-          {/* Mostrar historial */}
           <div className={styles.history}>
-            <h2 className={styles.titleRecord} >Historial de URL's</h2>
-            {history.length > 0 ? (
+            <h2 className={styles.titleRecord}>Historial de URLs</h2>
+            {loading ? (
+              <p>Cargando historial...</p>
+            ) : history.length > 0 ? (
               history.map(link => (
                 <Record key={link.id} url={link.url} shortUrl={link.shortUrl} />
               ))

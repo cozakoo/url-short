@@ -26,6 +26,5 @@ export default async function handler(req, res) {
     shortUrl: `${baseUrl}/${userLink.link.shortUrl}`, // Construye la URL completa
   }));
 
-  console.log("ASASDSAD: ", links);
   res.json(links);
 }

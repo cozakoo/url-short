@@ -189,8 +189,8 @@
   width: 50px; /* Ajusta el tamaño según prefieras */
   height: 50px;
   border-radius: 50%;
-  margin-left: 15px;
-  margin-right: 15px;
+  /* margin-left: 15px; */
+  /* margin-right: 15px; */
 }
 
 .buttonSession {
