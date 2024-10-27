@@ -6,7 +6,8 @@ import {
   createUser,
   createUserLink,
   disconnect
-} from '../services/shortUrlService';
+} from '../../services/shortUrlService';
+
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
