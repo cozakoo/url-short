@@ -6,7 +6,7 @@ import styles from '../styles/Home.module.css';
 const UrlShortener = ({ onShorten }) => {
   const inputRef = useRef();
   const [shortURL, setShortURL] = useState('');
-  const [error, setError] = useState('');
+  const [error, setError] = useState('Introduce una URL válida'); // Mensaje por defecto
   const [isLoading, setIsLoading] = useState(false);
   const { data: session } = useSession(); // Obtén la sesión
 
@@ -24,13 +24,13 @@ const UrlShortener = ({ onShorten }) => {
     const url = inputRef.current.value;
 
     if (!isUrlValid(url)) {
-      setError('Por favor, introduce una URL válida.');
+      setError('Por favor, introduce una URL válida.'); // Cambia el mensaje de error
       setShortURL('');
       setIsLoading(false);
       return;
     }
 
-    setError('');
+    setError(''); // Resetea el mensaje de error
     setIsLoading(true);
 
     fetch('/api/shortUrl', {
@@ -47,7 +47,7 @@ const UrlShortener = ({ onShorten }) => {
       .then((res) => res.json())
       .then((data) => {
         setShortURL(data.shortUrl);
-        setError('');
+        setError(''); // Resetea el mensaje de error
         onShorten(data.shortUrl); // Llama a la función proporcionada
       })
       .catch((err) => console.error('Error:', err))
@@ -58,7 +58,6 @@ const UrlShortener = ({ onShorten }) => {
   const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'; // Valor por defecto
 
   return (
-    
     <form className={styles.card} onSubmit={handleSubmit}>
       <input
         ref={inputRef}
@@ -69,7 +68,7 @@ const UrlShortener = ({ onShorten }) => {
       <button className={styles.button} disabled={isLoading}>Acorta</button>
       <br />
       <br />
-      {error && <span className={styles.error}>{error}</span>}
+      {error && <span className={styles.error}>{error}</span>} {/* Muestra el mensaje de error */}
       {isLoading && <span className={styles.loading}>Procesando...</span>}
       {shortURL && !error && !isLoading && (
         <span className={styles.result}>
