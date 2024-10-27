@@ -23,6 +23,18 @@ const History = ({ session, fetchHistory }) => {
     link.shortUrl.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleDelete = async (id) => {
+    try {
+      await fetch(`/api/urls/${id}`, {
+        method: 'DELETE',
+      });
+      // Actualiza tu estado para eliminar el registro de la UI
+      setHistory((prev) => prev.filter(link => link.id !== id)); // Cambia a setHistory
+    } catch (error) {
+      console.error('Error al eliminar el registro:', error);
+    }
+  };
+
   return (
     <div className={styles.history}>
       <h2 className={styles.titleRecord}>Historial de URLs</h2>
@@ -39,7 +51,7 @@ const History = ({ session, fetchHistory }) => {
         <p>Cargando historial...</p>
       ) : filteredHistory.length > 0 ? (
         filteredHistory.map((link) => (
-          <Record key={link.id} url={link.url} shortUrl={link.shortUrl} />
+          <Record key={link.id} url={link.url} shortUrl={link.shortUrl} onDelete={() => handleDelete(link.id)} />
         ))
       ) : (
         <p>No se encontraron resultados.</p>
