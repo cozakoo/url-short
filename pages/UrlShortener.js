@@ -55,7 +55,7 @@ const UrlShortener = ({ onShorten }) => {
   };
 
   // Asegúrate de que la variable de entorno está definida
-  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'; // Valor por defecto
+  const baseUrl = process.env.NEXTAUTH_URL || 'https://shortlink-rose.vercel.app/'; // Valor por defecto
 
   return (
     <form className={styles.card} onSubmit={handleSubmit}>
