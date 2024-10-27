@@ -1,26 +1,24 @@
 // pages/api/auth/[...nextauth].js
 import NextAuth from "next-auth";
-import { PrismaAdapter } from "@auth/prisma-adapter"
-import { prisma } from "../../../lib/db/prisma";
-
-// import { MongoDBAdapter } from '@next-auth/mongodb-adapter'
-// import { PrismaClient } from '@prisma/client';
-
 import GithubProvider from "next-auth/providers/github";
-import EmailProvider from "next-auth/providers/email";
+import GoogleProvider from "next-auth/providers/google";
+import LinkedInProvider from "next-auth/providers/linkedin";
 
-export default NextAuth({
-  adapter: PrismaAdapter(prisma),
+
+export const authOptions = {
   providers: [
-    EmailProvider({
-      server: process.env.EMAIL_SERVER,
-      from: process.env.EMAIL_FROM,
-    }),
     GithubProvider({
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
     }),
-
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET
+    }),
+    LinkedInProvider({
+      clientId: process.env.LINKEDIN_CLIENT_ID,
+      clientSecret: process.env.LINKEDIN_CLIENT_SECRET
+    }),
   ],
   callbacks: {
     async jwt({ token, account }) {
@@ -33,5 +31,13 @@ export default NextAuth({
       session.accessToken = token.accessToken;
       return session;
     },
+    async signIn({ account, profile }) {
+      if (account.provider === "google") {
+        return profile.email_verified && profile.email.endsWith("@gmail.com");
+      }
+      return true; // Do different verification for other providers that don't have `email_verified`
+    },
   },
-});
+};
+
+export default NextAuth(authOptions);
