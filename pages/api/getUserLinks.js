@@ -10,21 +10,34 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
+  // Obtener el email desde los parámetros de la consulta
+  const email = req.query.email;
+
+  // Busca el usuario por email
+  const user = await prisma.user.findUnique({
+    where: { email }, // Asegúrate de que tengas un índice único para el correo en tu modelo de usuario
+  });
+
+  if (!user) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+
+  // Usa el ID del usuario para buscar sus enlaces
   const userLinks = await prisma.userLink.findMany({
     where: {
-      userId: session.user.id, // Suponiendo que el ID del usuario está en session.user.id
+      userId: user.id,
     },
     include: {
-      link: true, // Incluye los enlaces asociados
+      link: true,
     },
   });
   
-  const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000"; // Usa la URL base desde el entorno
+  const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
 
   const links = userLinks.map(userLink => ({
     id: userLink.id,
     url: userLink.link.url,
-    shortUrl: `${baseUrl}/${userLink.link.shortUrl}`, // Construye la URL completa
+    shortUrl: `${baseUrl}/${userLink.link.shortUrl}`,
   }));
 
   res.json(links);

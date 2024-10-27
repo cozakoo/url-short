@@ -77,9 +77,6 @@ export async function addLinkToUser(userId, url) {
           linkId: link.id
         }
       });
-      console.log("Nuevo vínculo creado entre el usuario y el enlace");
-    } else {
-      console.log("El vínculo entre el usuario y el enlace ya existe");
     }
   } catch (error) {
     console.error("Error al agregar la URL al usuario:", error);

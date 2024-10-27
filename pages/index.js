@@ -14,7 +14,7 @@ export default function Home() {
   useEffect(() => {
     if (session) {
       const fetchLinks = async () => {
-        const response = await fetch('/api/getUserLinks');
+        const response = await fetch(`/api/getUserLinks?email=${session.user.email}`); // Enviar el email
         const data = await response.json();
         setHistory(data);
       };
@@ -23,7 +23,7 @@ export default function Home() {
   }, [session]);
 
   const fetchHistory = async () => {
-    const response = await fetch('/api/getUserLinks');
+    const response = await fetch(`/api/getUserLinks?email=${session.user.email}`);
     const data = await response.json();
     return data;
   };
@@ -51,7 +51,7 @@ export default function Home() {
           </div>
           
         </div>
-          {session && <History session={session} fetchHistory={fetchHistory} />}
+        {session && <History session={session} fetchHistory={fetchHistory} />}
       </main>
     </div>
   );

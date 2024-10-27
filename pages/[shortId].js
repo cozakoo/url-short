@@ -8,21 +8,31 @@ export async function getServerSideProps({ params }) {
   const prisma = new PrismaClient();
   const { shortId } = params;
 
-  const data = await prisma.link.findUnique({
+  // Buscar el enlace correspondiente al shortId
+  const link = await prisma.link.findUnique({
     where: { shortUrl: shortId },
   });
 
-  prisma.$disconnect();
-
-  if (!data) {
+  // Si no se encuentra el enlace, redirigir a la página principal
+  if (!link) {
     return {
       redirect: { destination: "/" },
     };
   }
 
+  // Incrementar el contador de redirecciones
+  await prisma.link.update({
+    where: { shortUrl: shortId },
+    data: { redirectCount: link.redirectCount + 1 },
+  });
+
+  // Desconectar el cliente de Prisma
+  await prisma.$disconnect();
+
+  // Redirigir al enlace original
   return {
     redirect: {
-      destination: data.url,
+      destination: link.url,
     },
   };
 }

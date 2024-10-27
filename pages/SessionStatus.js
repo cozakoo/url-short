@@ -18,7 +18,8 @@ const SessionStatus = ({ session }) => {
       </div>
     ) : (
       <div className={styles.message}>
-        <p>Inicia sesión en tu cuenta para acceder a tu historial.</p>
+        <p className={styles.textLogin}>Inicia sesión en tu cuenta para acceder a tu historial.</p>
+
         <button className={styles.buttonSession} onClick={() => signIn()}>Iniciar sesión</button>
       </div>
     )}
