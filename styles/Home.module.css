@@ -1,7 +1,7 @@
 .container {
   min-height: 100vh;
-  padding: 0 0.5rem;
-  display: flex;
+  padding: 1.5rem;
+  /* display: flex; */
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -10,7 +10,7 @@
 
 .main {
   flex: 1;
-  /* display: flex; */
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -45,7 +45,9 @@
 }
 
 .title {
-  margin: 0;
+  margin: 0px;
+  margin-bottom: 21px;
+  margin-top: 21px;
   line-height: 1.15;
   font-size: 4rem;
 }
@@ -118,6 +120,7 @@
   font-size: 1.25rem;
   padding: 1rem;
 }
+
 .button {
   margin: 0.125rem;
   font-size: 1.25rem;
@@ -141,15 +144,14 @@
   padding: 20px;
   border-right: 1px solid #ccc; /* Separador opcional */
   padding-right: 30px;
-  /* display: flex; Activa el modo flex en el div .left */
+  display: flex;
   align-items: center; /* Centra verticalmente */
   justify-content: center; /* Centra horizontalmente, si es necesario */
 }
 
 .right {
-  flex: 1; /* Toma el 33% del espacio */
+  flex: 1; 
   padding: 20px;
-  width: 40%;
 }
 
 .input {
@@ -160,13 +162,28 @@
   width: 100%;
 }
 
-.containerSession {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 10px;
-  /* width: 100%; */
+.containerLog {
+  display: flex; /* Habilita flexbox */
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  margin-top: auto; /* Mantiene el margen superior automático */
+  margin-bottom: auto; /* Mantiene el margen inferior automático */
+  height: 100%; /* Asegura que ocupe toda la altura disponible */
 }
+
+.message {
+  text-align: center; /* Centra el texto en caso de que sea más largo */
+  margin: 0; /* Elimina márgenes adicionales si es necesario */
+}
+
+
+.containerSession {
+  display: flex; /* Habilita el modelo de caja flexible */
+  align-items: center; /* Alinea los elementos verticalmente al centro */
+  justify-content: space-between; /* Asegura que haya espacio entre los elementos */
+  width: 100%; /* Asegura que ocupe todo el ancho */
+}
+
 
 .details {
   display: flex;
@@ -218,14 +235,13 @@
   color: blue;
 }
 
-/* styles/Home.module.css */
 .history {
   margin-top: 20px;
-  padding: 10px;
+  padding: 20px;
   border: 1px solid #ddd;
   border-radius: 8px;
+  width: 100%;
 }
-
 
 .history:hover{
   border-color: #0070f3;
@@ -235,14 +251,14 @@
 
 .titleRecord{
   text-align: center;
+  margin-bottom: 21px;
 }
 
 /* styles/Home.module.css */
 .searchInput {
   padding: 8px;
   margin-bottom: 20px;
-  width: 100%;
-  max-width: 400px;
+  width: 30%;
   font-size: 16px;
   border-radius: 4px;
   border: 1px solid #ccc;
