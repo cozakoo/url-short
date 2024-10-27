@@ -23,6 +23,9 @@ const UrlShortener = ({ onShorten }) => {
     e.preventDefault();
     const url = inputRef.current.value;
 
+    console.log('Función handleSubmit ejecutada'); // Esto debería aparecer en la consola
+
+
     if (!isUrlValid(url)) {
       setError('Por favor, introduce una URL válida.'); // Cambia el mensaje de error
       setShortURL('');
@@ -38,24 +41,32 @@ const UrlShortener = ({ onShorten }) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      credentials: 'include', // Esto asegura que las cookies se envían
+      credentials: 'include',
       body: JSON.stringify({ 
         url, 
         userEmail: session ? session.user.email : null,
       }),
     })
-      .then((res) => res.json())
-      .then((data) => {
-        setShortURL(data.shortUrl);
-        setError(''); // Resetea el mensaje de error
-        onShorten(data.shortUrl); // Llama a la función proporcionada
-      })
-      .catch((err) => console.error('Error:', err))
-      .finally(() => setIsLoading(false));
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error('Network response was not ok ' + res.statusText);
+      }
+      return res.json();
+    })
+    .then((data) => {
+      setShortURL(data.shortUrl);
+      setError(''); // Resetea el mensaje de error
+      onShorten(data.shortUrl); // Llama a la función proporcionada
+    })
+    .catch((err) => {
+      console.error('Error:', err);
+      setError(err.message); // Manejo del error
+    })
+    .finally(() => setIsLoading(false));
   };
 
   // Asegúrate de que la variable de entorno está definida
-  const baseUrl = process.env.NEXTAUTH_URL || 'https://acs-rose.vercel.app/'; // Valor por defecto
+  const baseUrl = process.env.NEXTAUTH_URL;
 
   return (
     <form className={styles.card} onSubmit={handleSubmit}>

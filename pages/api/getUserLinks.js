@@ -32,7 +32,7 @@ export default async function handler(req, res) {
     },
   });
   
-  const baseUrl = process.env.NEXTAUTH_URL || "https://acs-rose.vercel.app/";
+  const baseUrl = process.env.NEXTAUTH_URL;
 
   const links = userLinks.map(userLink => ({
     id: userLink.id,
