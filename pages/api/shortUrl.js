@@ -1,5 +1,4 @@
 import {
-  findExistingUrl,
   addLinkToUser,
   createShortUrl,
   findExistingUser,
@@ -10,37 +9,40 @@ import {
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    const { url, userEmail } = req.body;
-    
-    console.log('URL a acortar:', url);
-    console.log('Correo del usuario:', userEmail);
+    const { url, userEmail, existingLink } = req.body;
+
+    console.log('----------------------------------');
+    console.log('url:', url);
+    console.log('userEmail:', userEmail);
+    console.log('existingLink:', existingLink);
+    console.log('----------------------------------');
 
     try {
-      // Buscar la URL existente
-      const existingUrl = await findExistingUrl(url);
       let shortUrl;
       let linkId;
+      
+      if (existingLink) {
+        console.log('ESTOY EN EL IF 01');
 
-      if (existingUrl) {
-        shortUrl = existingUrl.shortUrl;
-        linkId = existingUrl.id;
+        shortUrl = existingLink.shortUrl;
+        linkId = existingLink.id;
+        console.log('SALI DEL IF 01');
+
       } else {
-        shortUrl = generateShortUrl();
-        console.log('shortUrl:', shortUrl);
-        
+        console.log('ESTOY EN EL ELSE 02');
+        shortUrl = generateShortUrl(); //genera el acortador
         const newLink = await createShortUrl(url, shortUrl);
-        console.log('newLink:', newLink);
-        
         shortUrl = newLink.shortUrl;
-        console.log('shortUrl:', shortUrl);
-       
         linkId = newLink.id;
-        console.log('linkId:', linkId);
+        console.log('SALI DEL ELSE 02');
       }
 
       // Manejar el usuario solo si se proporciona un email
       if (userEmail) {
+        console.log('ESTOY EN EL IF 03');
         await handleUserLinking(userEmail, linkId, url);
+        console.log('ESTOY EN EL ELSE 03');
+
       }
 
       return res.status(201).send({ shortUrl });
@@ -64,12 +66,24 @@ function generateShortUrl() {
 
 // Maneja la lógica de vinculación de usuarios
 async function handleUserLinking(userEmail, linkId, url) {
+  console.log('ESTOY EN EL handleUserLinking');
+
   const existingUserId = await findExistingUser(userEmail);
 
   if (existingUserId) {
+    console.log('ESTOY EN EL IF 05');
+
     await addLinkToUser(existingUserId, url);
+    console.log('SALI EN EL IF 05');
+
   } else {
+    console.log('ESTOY EN EL ELSE 05');
+
     const newUser = await createUser(userEmail);
     await createUserLink(newUser.id, linkId);
+    console.log('SALI DEL ELSE 05');
+
   }
+  console.log('SALI DEL handleUserLinking');
+  
 }

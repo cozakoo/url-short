@@ -1,71 +1,78 @@
-import { useRef, useState } from 'react';
+// /components/UrlShortener.js
+import { useRef, useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
 import styles from '../styles/Home.module.css';
+import { fetchLinks } from './components/fetchLinks';
+import { isUrlValid } from './components/validateUrl';
 
 const UrlShortener = ({ onShorten }) => {
   const inputRef = useRef();
   const [shortURL, setShortURL] = useState('');
-  const [error, setError] = useState('Introduce una URL válida'); // Mensaje por defecto
+  const [error, setError] = useState('Introduce una URL válida');
   const [isLoading, setIsLoading] = useState(false);
-  const { data: session } = useSession(); // Obtén la sesión
+  const { data: session } = useSession();
+  const [links, setLinks] = useState([]);
 
-  const isUrlValid = (url) => {
-    try {
-      new URL(url);
-      return true;
-    } catch (err) {
-      return false;
-    }
-  };
+  useEffect(() => {
+    const loadLinks = async () => {
+      const loadedLinks = await fetchLinks();
+      setLinks(loadedLinks);
+    };
 
-  const handleSubmit = (e) => {
+    loadLinks();
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const url = inputRef.current.value;
 
-    console.log('Función handleSubmit ejecutada'); // Esto debería aparecer en la consola
-
-
     if (!isUrlValid(url)) {
-      setError('Por favor, introduce una URL válida.'); // Cambia el mensaje de error
+      setError('Por favor, introduce una URL válida.');
       setShortURL('');
-      setIsLoading(false);
       return;
     }
 
-    setError(''); // Resetea el mensaje de error
+    const existingLink = links.find(link => link.url === url);
+
+    let isExistingLink = false;
+
+    if (existingLink) {
+      isExistingLink = true;
+      setShortURL(existingLink.shortUrl);
+      setError('');
+    }
+
+    setError('');
     setIsLoading(true);
 
-    fetch('/api/shortUrl', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({ 
-        url, 
-        userEmail: session ? session.user.email : null,
-      }),
-    })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error('Network response was not ok ' + res.statusText);
-      }
-      return res.json();
-    })
-    .then((data) => {
+    try {
+      const response = await fetch('/api/shortUrl', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ 
+          url, 
+          userEmail: session ? session.user.email : null,
+          existingLink
+         }),
+      });
+
+      if (!response.ok) throw new Error('Error al acortar la URL: ' + response.statusText);
+
+      const data = await response.json();
       setShortURL(data.shortUrl);
-      setError(''); // Resetea el mensaje de error
-      onShorten(data.shortUrl); // Llama a la función proporcionada
-    })
-    .catch((err) => {
+      onShorten(data.shortUrl);
+
+      setLinks([...links, { url, shortUrl: data.shortUrl }]);
+    } catch (err) {
       console.error('Error:', err);
-      setError(err.message); // Manejo del error
-    })
-    .finally(() => setIsLoading(false));
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  // Asegúrate de que la variable de entorno está definida
   const baseUrl = process.env.NEXTAUTH_URL;
 
   return (
@@ -79,7 +86,7 @@ const UrlShortener = ({ onShorten }) => {
       <button className={styles.button} disabled={isLoading}>Acorta</button>
       <br />
       <br />
-      {error && <span className={styles.error}>{error}</span>} {/* Muestra el mensaje de error */}
+      {error && <span className={styles.error}>{error}</span>}
       {isLoading && <span className={styles.loading}>Procesando...</span>}
       {shortURL && !error && !isLoading && (
         <span className={styles.result}>

@@ -2,25 +2,26 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export async function findExistingUrl(url) {
-  return await prisma.link.findUnique({
-    where: { url },
-  });
-}
-
 export async function findExistingUser(email) {
+  console.log('SALI DEL findExistingUser');
+
   const user = await prisma.user.findUnique({
     where: { email },
   });
-  
+  console.log('SALI DEL findExistingUser');
+
   return user ? user.id : null; // Retorna el ID del usuario si existe, o null si no
 }
 
 // Función para crear un nuevo usuario
 export async function createUser(email) {
+  console.log('ESTOY EN EL createUser');
+
   return await prisma.user.create({
     data: { email },
   });
+  console.log('SALI DEL createUser');
+
 }
 
 export async function createShortUrl(url, shortUrl) {
@@ -30,9 +31,11 @@ export async function createShortUrl(url, shortUrl) {
 }
 
 export async function createUserLink(userId, linkId) {
+  console.log('ESTOY EN EL createUser');
   return await prisma.userLink.create({
     data: { userId, linkId },
   });
+  console.log('SALI DEL createUser');
 }
 
 export async function disconnect() {

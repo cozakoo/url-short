@@ -21,13 +21,17 @@ model Link {
   createdAt     DateTime  @default(now())
   redirectCount Int       @default(0)
   users         UserLink[] // Relación con el modelo intermedio
+
+  @@index([shortUrl]) // Indexa el campo shortUrl
 }
+
 
 model UserLink {
   id      String @id @default(auto()) @map("_id") @db.ObjectId
-  userId  String @db.ObjectId // Aquí puedes mantenerlo como un String, que se usará para referirse al ID del usuario
+  userId  String @db.ObjectId 
   linkId  String @db.ObjectId
-  user    User   @relation(fields: [userId], references: [id]) // Referencia al campo 'id' en User
+  user    User   @relation(fields: [userId], references: [id]) 
   link    Link   @relation(fields: [linkId], references: [id])
-  @@unique([userId, linkId]) // Asegura que la combinación de userId y linkId sea única
+  @@unique([userId, linkId]) 
+  @@index([userId]) // Indexa el campo userId
 }
