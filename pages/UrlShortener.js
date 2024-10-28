@@ -3,8 +3,8 @@ import { useRef, useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
 import styles from '../styles/Home.module.css';
-import { fetchLinks } from './components/fetchLinks';
-import { isUrlValid } from './components/validateUrl';
+import { fetchLinks } from '../components/fetchLinks';
+import { isUrlValid } from '../components/validateUrl';
 
 const UrlShortener = ({ onShorten }) => {
   const inputRef = useRef();

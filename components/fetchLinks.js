@@ -1,4 +1,4 @@
-// /components/fetchLinks.js
+//pages/components/fetchLinks.js
 export const fetchLinks = async () => {
     try {
       const response = await fetch('/api/links');

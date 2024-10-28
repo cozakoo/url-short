@@ -1,4 +1,4 @@
-// /components/validateUrl.js
+//pages/components/validateUrl.js
 export const isUrlValid = (url) => {
     try {
       new URL(url);
