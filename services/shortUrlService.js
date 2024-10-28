@@ -15,21 +15,15 @@ export async function findExistingUser(email) {
 
 // Función para crear un nuevo usuario
 export async function createUser(email) {
-  console.log('ESTOY EN EL createUser');
-
   return await prisma.user.create({
     data: { email },
   });
-  console.log('SALI DEL createUser');
-
 }
 
 export async function createShortUrl(url, shortUrl) {
-  console.log('ESTOY EN EL createShortUrl');
   return await prisma.link.create({
     data: { url, shortUrl },
   });
-  console.log('SALI DEL createShortUrl');
 }
 
 export async function createUserLink(userId, linkId) {
