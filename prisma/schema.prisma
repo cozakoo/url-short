@@ -17,14 +17,14 @@ model User {
 model Link {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
   url           String    @unique
-  shortUrl      String    @unique
+  shortUrl      String    @unique // Mantener esta línea
   createdAt     DateTime  @default(now())
   redirectCount Int       @default(0)
   users         UserLink[] // Relación con el modelo intermedio
 
-  @@index([shortUrl]) // Indexa el campo shortUrl
+  // Eliminar la siguiente línea ya que shortUrl ya es único
+  // @@index([shortUrl]) // Indexa el campo shortUrl
 }
-
 
 model UserLink {
   id      String @id @default(auto()) @map("_id") @db.ObjectId

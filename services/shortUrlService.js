@@ -25,9 +25,11 @@ export async function createUser(email) {
 }
 
 export async function createShortUrl(url, shortUrl) {
+  console.log('ESTOY EN EL createShortUrl');
   return await prisma.link.create({
     data: { url, shortUrl },
   });
+  console.log('SALI DEL createShortUrl');
 }
 
 export async function createUserLink(userId, linkId) {
