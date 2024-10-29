@@ -1,5 +1,8 @@
 # Acortador de Url´s
 
+![Captura de pantalla 2024-10-29 135429](https://github.com/user-attachments/assets/6e4c8a12-a843-4327-a871-3a862c9258b8)
+
+
 El proyecto "Acortador de URL's" es una aplicación web diseñada para simplificar el uso y la gestión de enlaces largos, permitiendo a los usuarios acortar URL's y redirigir a su destino de manera eficiente. Desarrollado utilizando React y Next.js para una experiencia de usuario ágil y dinámica, el backend está construido con Prisma y MongoDB, garantizando un manejo robusto de datos.
 
 Características Principales:
