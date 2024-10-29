@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
-
-import { SessionProvider } from "next-auth/react"
+import { SessionProvider } from "next-auth/react";
+import Footer from "./Footer"; // Asegúrate de que la ruta sea correcta
 
 export default function App({
   Component,
@@ -9,6 +9,7 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <Component {...pageProps} />
+      <Footer /> 
     </SessionProvider>
-  )
+  );
 }

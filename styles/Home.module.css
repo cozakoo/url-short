@@ -1,5 +1,5 @@
 .container {
-  min-height: 100vh;
+  min-height: 100vh; /* Asegúrate de que el contenedor principal ocupe al menos el 100% de la altura de la ventana */
   padding: 1.5rem;
   /* display: flex; */
   flex-direction: column;
@@ -267,4 +267,103 @@
 
 .textLogin{
   margin-bottom: 10px;
+}
+
+
+/* Estilos generales para móviles */
+@media (max-width: 600px) {
+  .content {
+    flex-direction: column-reverse; /* Coloca .right arriba de .left */
+  }
+
+  .container {
+    padding: 1rem;
+  }
+
+  .main {
+    padding: 1rem;
+    width: 100%;
+  }
+
+  .footer {
+    height: auto;
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 2.5rem; /* Reduce el tamaño del título en pantallas pequeñas */
+  }
+
+  .description {
+    font-size: 1.25rem;
+  }
+
+  .grid {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch; /* Asegura que los elementos se expandan a todo el ancho */
+  }
+
+  .card {
+    width: 100%; /* Ocupa el 100% del ancho */
+    margin: 0.5rem 0;
+  }
+
+  .left, .right {
+    width: 100%; /* Asegura que ambos tomen el ancho completo en móviles */
+    padding: 10px; /* Ajusta el padding para pantallas pequeñas */
+  }
+
+  .left {
+    flex: 1;
+    padding: 10px; /* Reduce el padding en dispositivos móviles */
+    border-right: none; /* Elimina el borde derecho en móviles */
+  }
+
+  .right {
+    padding: 10px; /* Ajusta el padding para móviles */
+  }
+
+  .input,
+  .button {
+    font-size: 1rem; /* Ajusta el tamaño de fuente para botones e inputs */
+    padding: 0.75rem;
+    width: 100%;
+  }
+
+  .containerLog,
+  .containerSession {
+    flex-direction: column; /* Cambia a columna para mejor visualización en móviles */
+    align-items: center;
+    text-align: center;
+  }
+
+  .history,
+  .historyContainer,
+  .details {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .historyList li {
+    font-size: 1rem;
+  }
+
+  .titleRecord {
+    font-size: 1.5rem;
+  }
+
+  .searchInput {
+    width: 90%; /* Expande el ancho de búsqueda en móviles */
+    font-size: 1rem;
+  }
+
+  .imageSession {
+    width: 40px;
+    height: 40px;
+  }
+
+  .buttonSession {
+    padding: 5px 10px; /* Ajusta el padding para mejorar el diseño en móviles */
+  }
 }
