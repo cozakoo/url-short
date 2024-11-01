@@ -98,8 +98,7 @@ const UrlShortener = ({ onShorten }) => {
     }
   };
   
-
-  const baseUrl = process.env.NEXTAUTH_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_NEXTAUTH_URL;
 
   return (
     <form className={styles.card} onSubmit={handleSubmit}>
