@@ -2,16 +2,23 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+// findExistingUser con logs detallados
 export async function findExistingUser(email) {
-  console.log('SALI DEL findExistingUser');
+  console.log(`Buscando usuario con email: ${email}`);
 
   const user = await prisma.user.findUnique({
     where: { email },
   });
-  console.log('SALI DEL findExistingUser');
 
-  return user ? user.id : null; // Retorna el ID del usuario si existe, o null si no
+  if (user) {
+    console.log(`Usuario encontrado: ID = ${user.id}`);
+    return user.id;
+  } else {
+    console.log('Usuario no encontrado');
+    return null;
+  }
 }
+
 
 // Función para crear un nuevo usuario
 export async function createUser(email) {

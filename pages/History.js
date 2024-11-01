@@ -11,25 +11,27 @@ const History = ({ session, fetchHistory }) => {
   useEffect(() => {
     if (session) {
       fetchHistory()
-        .then((data) => setHistory(data))
+        .then((data) => setHistory(data || [])) // Ensure data is an array
         .finally(() => setLoading(false));
     } else {
       setLoading(true);
     }
   }, [session, fetchHistory]);
 
-  const filteredHistory = history.filter((link) =>
-    link.url.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    link.shortUrl.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredHistory = Array.isArray(history)
+    ? history.filter((link) =>
+        link.url.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        link.shortUrl.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : [];
 
   const handleDelete = async (id) => {
     try {
       await fetch(`/api/urls/${id}`, {
         method: 'DELETE',
       });
-      // Actualiza tu estado para eliminar el registro de la UI
-      setHistory((prev) => prev.filter(link => link.id !== id)); // Cambia a setHistory
+      // Update the state to remove the deleted record from the UI
+      setHistory((prev) => prev.filter(link => link.id !== id));
     } catch (error) {
       console.error('Error al eliminar el registro:', error);
     }
@@ -37,16 +39,16 @@ const History = ({ session, fetchHistory }) => {
 
   return (
     <div className={styles.history}>
-      <h2 className={styles.titleRecord}>Historial de URLs</h2>
+      <h2 className={styles.titleRecord}>Historial de URL's</h2>
       
-        <input
-          type="text"
-          placeholder="Buscar URL..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className={styles.searchInput}
-        />
-        
+      <input
+        type="text"
+        placeholder="Buscar URL..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className={styles.searchInput}
+      />
+      
       {loading ? (
         <p>Cargando historial...</p>
       ) : filteredHistory.length > 0 ? (

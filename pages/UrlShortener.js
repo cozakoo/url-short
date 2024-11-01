@@ -6,6 +6,8 @@ import styles from '../styles/Home.module.css';
 import { fetchLinks } from '../components/fetchLinks';
 import { isUrlValid } from '../components/validateUrl';
 
+import {findExistingUser} from '../services/shortUrlService';
+
 const UrlShortener = ({ onShorten }) => {
   const inputRef = useRef();
   const [shortURL, setShortURL] = useState('');
@@ -24,16 +26,49 @@ const UrlShortener = ({ onShorten }) => {
   }, []);
 
   const handleUserLinking = async (userEmail, linkId, url) => {
-    const existingUserId = await findExistingUser(userEmail);
+    try {
+      // Verificar si el usuario existe
+      const response = await fetch(`/api/findUser?email=${userEmail}`);
+      
+      if (response.ok) {
 
-    if (existingUserId) {
-      await addLinkToUser(existingUserId, url);
-    } else {
-      const newUser = await createUser(userEmail);
-      await createUserLink(newUser.id, linkId);
+        console.log("ESTOY EN EL IF 01");
+
+        const data = await response.json();
+        const existingUserId = data.userId;
+  
+        // Si el usuario existe, agregar el link
+        await fetch('/api/createUserLink', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: existingUserId, linkId }),
+        });
+
+        
+      } else if (response.status === 404) {
+        // Si el usuario no existe, crearlo
+        const createUserResponse = await fetch('/api/createUser', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: userEmail }),
+        });
+  
+        if (createUserResponse.ok) {
+          const newUserData = await createUserResponse.json();
+  
+          // Vincular el link al nuevo usuario
+          await fetch('/api/createUserLink', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: newUserData.userId, linkId }),
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error en handleUserLinking:', error);
     }
-  };
-
+  };  
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const url = inputRef.current.value;
@@ -66,14 +101,15 @@ const UrlShortener = ({ onShorten }) => {
   
       if (!response.ok) throw new Error('Error al acortar la URL: ' + response.statusText);
   
-      const data = await response.json();
+      let data = await response.json();
   
-      // Aquí actualizas el estado antes de hacer la llamada al handler
-      setShortURL(data.shortUrl); // Esto se ejecutará primero
+      // Update the short URL state before making any other calls
+      setShortURL(data.shortUrl);
   
-      // Ahora llama a la API para crear el enlace en la base de datos
+      // Create the link in the database if needed
+      let createResponse;
       if (data.createNewLink) {
-        const createResponse = await fetch('/api/createShortUrl', {
+        createResponse = await fetch('/api/createShortUrl', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ url, shortUrl: data.shortUrl }),
@@ -82,12 +118,20 @@ const UrlShortener = ({ onShorten }) => {
         if (!createResponse.ok) {
           throw new Error('Error al crear el enlace en la base de datos.');
         }
+  
+        data = await createResponse.json();
       }
   
       setLinks([...links, { url, shortUrl: data.shortUrl }]);
-      
-      if (session) {
-        await handleUserLinking(session.user.email, linkId, url);
+  
+      // Only proceed with user linking if createResponse exists and session is valid
+      if (session && createResponse) {
+        console.log("ESTOY AQUI EN EL IF SESSION");
+        console.log("DATA: ", data.id);
+        // console.log("ESTOY AQUI EN EL IF SESSION");
+        await handleUserLinking(session.user.email, data.id, url);
+      }else{
+        console.log("ESTOY AQUI EN EL ELSE");
       }
   
     } catch (err) {
@@ -97,6 +141,7 @@ const UrlShortener = ({ onShorten }) => {
       setIsLoading(false);
     }
   };
+  
   
   const baseUrl = process.env.NEXT_PUBLIC_NEXTAUTH_URL;
 
