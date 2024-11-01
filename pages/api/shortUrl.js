@@ -9,7 +9,6 @@ import {
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    console.log("ENTRE AL HANDLER");
     const { url, existingLink } = req.body;
 
     try {
@@ -24,20 +23,14 @@ export default async function handler(req, res) {
         shortUrl = generateShortUrl(); //genera el acortador
         linkId = "";
         createNewLink = true;
-        // const newLink = await createShortUrl(url, shortUrl);
       }
 
-      // Manejar el usuario solo si se proporciona un email
-      // if (userEmail) {
-        // await handleUserLinking(userEmail, linkId, url);
-      // }
       return res.status(201).send({ shortUrl, linkId, createNewLink });
 
     } catch (error) {
       return res.status(500).send({ error: 'Internal server error' });
     } finally {
       await disconnect();
-      console.log("SALI DEL HANDLER");
     }
   } else {
     res.setHeader('Allow', ['POST']);

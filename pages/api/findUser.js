@@ -24,14 +24,11 @@ export default async function handler(req, res) {
 
     // Si se encuentra el usuario, devuelve el ID
     if (user) {
-      console.log(`Usuario encontrado: ID = ${user.id}`);
       return res.status(200).json({ userId: user.id });
     } else {
-      console.log('Usuario no encontrado');
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
   } catch (error) {
-    console.error('Error en la consulta:', error);
     return res.status(500).json({ message: 'Error en el servidor' });
   }
 }

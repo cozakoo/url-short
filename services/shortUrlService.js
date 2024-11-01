@@ -4,17 +4,13 @@ const prisma = new PrismaClient();
 
 // findExistingUser con logs detallados
 export async function findExistingUser(email) {
-  console.log(`Buscando usuario con email: ${email}`);
-
   const user = await prisma.user.findUnique({
     where: { email },
   });
 
   if (user) {
-    console.log(`Usuario encontrado: ID = ${user.id}`);
     return user.id;
   } else {
-    console.log('Usuario no encontrado');
     return null;
   }
 }
@@ -34,11 +30,9 @@ export async function createShortUrl(url, shortUrl) {
 }
 
 export async function createUserLink(userId, linkId) {
-  console.log('ESTOY EN EL createUser');
   return await prisma.userLink.create({
     data: { userId, linkId },
   });
-  console.log('SALI DEL createUser');
 }
 
 export async function disconnect() {

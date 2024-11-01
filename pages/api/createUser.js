@@ -21,11 +21,8 @@ export default async function handler(req, res) {
     const newUser = await prisma.user.create({
       data: { email },
     });
-
-    console.log(`Nuevo usuario creado: ID = ${newUser.id}`);
     return res.status(201).json({ userId: newUser.id, message: 'Usuario creado exitosamente' });
   } catch (error) {
-    console.error('Error al crear el usuario:', error);
     return res.status(500).json({ message: 'Error en el servidor' });
   }
 }

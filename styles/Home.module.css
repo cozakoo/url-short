@@ -1,3 +1,16 @@
+.input {
+  color: white;
+  border: 2px solid #8707ff;
+  border-radius: 10px;
+  padding: 10px 25px;
+  background: transparent;
+}
+
+.input:active {
+  box-shadow: 2px 2px 15px #8707ff inset;
+}
+
+
 .container {
   min-height: 100vh; /* Asegúrate de que el contenedor principal ocupe al menos el 100% de la altura de la ventana */
   padding: 1.5rem;
@@ -367,3 +380,15 @@
     padding: 5px 10px; /* Ajusta el padding para mejorar el diseño en móviles */
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+

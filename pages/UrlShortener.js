@@ -31,9 +31,6 @@ const UrlShortener = ({ onShorten }) => {
       const response = await fetch(`/api/findUser?email=${userEmail}`);
       
       if (response.ok) {
-
-        console.log("ESTOY EN EL IF 01");
-
         const data = await response.json();
         const existingUserId = data.userId;
   
@@ -126,12 +123,7 @@ const UrlShortener = ({ onShorten }) => {
   
       // Only proceed with user linking if createResponse exists and session is valid
       if (session && createResponse) {
-        console.log("ESTOY AQUI EN EL IF SESSION");
-        console.log("DATA: ", data.id);
-        // console.log("ESTOY AQUI EN EL IF SESSION");
         await handleUserLinking(session.user.email, data.id, url);
-      }else{
-        console.log("ESTOY AQUI EN EL ELSE");
       }
   
     } catch (err) {
@@ -153,7 +145,11 @@ const UrlShortener = ({ onShorten }) => {
         className={styles.input}
         placeholder="Introduce tu URL aquí"
       />
-      <button className={styles.button} disabled={isLoading}>Acorta</button>
+      
+      <button className={styles.button} disabled={isLoading}>
+        {isLoading ? 'Acortando su URL y guardando...' : 'Acorta'}
+      </button>
+
       <br />
       <br />
       {error && <span className={styles.error}>{error}</span>}
