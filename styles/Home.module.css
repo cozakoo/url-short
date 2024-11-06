@@ -137,6 +137,7 @@
   margin: 0.125rem;
   font-size: 1.25rem;
   padding: 1rem;
+  width: 50%;
 }
 
 @media (max-width: 600px) {
